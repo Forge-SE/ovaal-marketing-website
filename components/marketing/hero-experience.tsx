@@ -8,7 +8,9 @@ import {
   type MotionValue,
 } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { HoverFill } from "@/components/marketing/hover-fill";
 
 const imageSrc = "/restaurant-service.webp";
 
@@ -16,7 +18,7 @@ function ArrowRightIcon() {
   return (
     <svg
       aria-hidden="true"
-      className="size-[18px]"
+      className="relative z-10 size-[18px]"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -45,9 +47,10 @@ function PhotoSceneCopy() {
       <button
         type="button"
         disabled
-        className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground sm:mt-8"
+        className="group relative isolate mt-7 inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-7 py-3 text-sm font-semibold text-primary-foreground transition-[color,scale] duration-150 hover:text-primary active:scale-[0.96] focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:mt-8"
       >
-        Request A Demo
+        <HoverFill color="dark" />
+        <span className="relative z-10">Request A Demo</span>
         <ArrowRightIcon />
       </button>
     </div>
@@ -163,13 +166,13 @@ export function HeroExperience() {
           className="relative z-0 grid h-full min-h-svh w-full min-w-0 grid-rows-[auto_1fr] px-5 py-6 sm:px-10 sm:py-8 lg:px-20 lg:py-10"
         >
           <div className="flex items-center">
-            <span className="inline-flex items-center gap-3 text-[1.6rem] leading-none font-semibold tracking-[-0.065em] sm:text-[1.9rem]">
+            <span className="inline-flex items-center gap-2.5 text-[1.35rem] leading-none font-semibold tracking-[-0.065em] sm:text-[1.6rem]">
               <Image
                 src="/pwa-192x192.png"
                 alt=""
-                width={36}
-                height={36}
-                className="size-9 rounded-xl"
+                width={30}
+                height={30}
+                className="size-[30px] rounded-lg"
               />
               Ovaal
             </span>
@@ -206,18 +209,19 @@ export function HeroExperience() {
               so guests get a smoother experience and you get the numbers to grow.
             </p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:mt-9">
-              <button
-                type="button"
-                disabled
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-primary bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+              <Link
+                href="/beta"
+                className="group relative isolate inline-flex min-h-12 items-center justify-center overflow-hidden rounded-full px-6 py-3 text-sm font-semibold text-primary-foreground transition-[color,scale] duration-150 hover:text-primary active:scale-[0.96] focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               >
-                Join the beta
-              </button>
+                <HoverFill color="dark" />
+                <span className="relative z-10">Join the beta</span>
+              </Link>
               <a
                 href="#how-it-works"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white bg-white px-6 py-3 text-sm font-semibold text-secondary transition-[background-color,scale] duration-150 hover:bg-secondary-foreground active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                className="group relative isolate inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm font-semibold text-secondary transition-[color,scale] duration-150 hover:text-primary-foreground active:scale-[0.96] focus-visible:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               >
-                See how it works
+                <HoverFill color="lime" />
+                <span className="relative z-10">See how it works</span>
                 <ArrowRightIcon />
               </a>
             </div>

@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { HoverFill } from "@/components/marketing/hover-fill";
 
 const connectionBenefits = {
   online: [
@@ -64,14 +65,14 @@ function ExpandedCardArrow({
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.8 }}
       transition={{ duration: reduceMotion ? 0 : 0.22 }}
-      className="absolute top-4 right-4 flex size-11 items-center justify-center overflow-hidden rounded-xl bg-white text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:top-5 sm:right-5"
+      className={`absolute top-4 right-4 flex size-11 items-center justify-center overflow-hidden rounded-xl text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:top-5 sm:right-5 ${hovered ? (online ? "bg-primary-foreground" : "bg-primary") : "bg-white"}`}
     >
       <motion.span
         aria-hidden="true"
         initial={false}
         animate={{ scale: hovered ? 1 : 0 }}
         transition={{ duration: reduceMotion ? 0 : hovered ? 0.5 : 0.4, ease: [0.2, 0, 0, 1] }}
-        className={`pointer-events-none absolute -top-12 -right-12 size-28 rounded-full ${online ? "bg-primary-foreground" : "bg-primary"}`}
+        className="pointer-events-none absolute -top-12 -right-12 size-28 rounded-full bg-white/15"
       />
       <svg
         aria-hidden="true"
@@ -261,9 +262,10 @@ export function ConnectionSection() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.8 }}
                       transition={{ duration: reduceMotion ? 0 : 0.2 }}
-                      className="absolute right-3 bottom-3 flex size-11 items-center justify-center rounded-xl bg-white/20 text-white backdrop-blur-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:right-5 sm:bottom-5"
+                      className="group absolute right-1 bottom-3 isolate flex size-10 items-center justify-center overflow-hidden rounded-xl text-white backdrop-blur-xl transition-[color,scale] duration-150 hover:text-primary-foreground active:scale-[0.96] focus-visible:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:right-5 sm:bottom-5 sm:size-11"
                     >
-                      <svg aria-hidden="true" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <HoverFill color="lime" base="glass" />
+                      <svg aria-hidden="true" className="relative z-10 size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                       </svg>
                     </motion.button>

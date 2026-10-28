@@ -2,24 +2,30 @@
 
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
+import { PlatformIllustration } from "@/components/marketing/platform-illustration";
+import { HoverFill } from "@/components/marketing/hover-fill";
 
 const platformCards = [
   {
+    kind: "numbers",
     title: "Grow with confidence.",
     description:
       "Daily numbers, clear recommendations and tighter control of stock and cash, so you start each day knowing how yesterday went and what to do next.",
   },
   {
+    kind: "service",
     title: "Make every visit smoother.",
     description:
-      "Faster ordering, a kitchen that stays in sync, payment the way your guests prefer to pay, and cash orders that keep flowing when the network drops. Soon, guests will be able to order for themselves too. Well-served guests come back, and repeat guests are how restaurants grow.",
+      "Faster ordering, a kitchen that stays in sync and payments guests prefer. Cash orders keep flowing when the network drops. Soon, guests can order for themselves too. Well-served guests come back, and repeat guests grow your restaurant.",
   },
   {
+    kind: "operations",
     title: "Run a tighter operation.",
     description:
       "Shifts, staff roles and stock that tracks itself, so your team spends less time guessing and more time with guests.",
   },
-];
+] as const;
 
 export function PlatformSection() {
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -46,18 +52,19 @@ export function PlatformSection() {
               with your restaurant.
             </p>
           </div>
-          <button
-            type="button"
-            disabled
-            className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-full border border-primary-foreground px-7 py-3 text-sm font-semibold text-primary-foreground lg:mt-2"
+          <Link
+            href="/beta"
+            className="group relative isolate inline-flex min-h-12 shrink-0 items-center justify-center overflow-hidden rounded-full px-7 py-3 text-sm font-semibold text-primary-foreground transition-[color,scale] duration-150 hover:text-primary active:scale-[0.96] focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground lg:mt-2"
           >
-            Join the beta
-          </button>
+            <HoverFill color="dark" base="white" />
+            <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-primary-foreground transition-opacity duration-150 group-hover:opacity-0 group-focus-visible:opacity-0" />
+            <span className="relative z-10">Join the beta</span>
+          </Link>
         </div>
 
-        <div ref={cardsRef} className="mt-16 grid gap-5 sm:mt-20 md:grid-cols-3 lg:mt-24 lg:gap-6">
+        <div ref={cardsRef} className="mt-16 grid gap-5 sm:mt-20 md:grid-cols-2 lg:mt-24 lg:gap-6 xl:grid-cols-3">
           {platformCards.map((card, index) => (
-            <div key={card.title} className="grid min-h-[360px]">
+            <div key={card.title} className="grid min-h-[470px] sm:min-h-[430px]">
               <AnimatePresence initial={false}>
                 {cardsVisible && (
                   <motion.article
@@ -70,14 +77,17 @@ export function PlatformSection() {
                       delay: reduceMotion ? 0 : index * 0.1,
                       ease: [0.2, 0, 0, 1],
                     }}
-                    className="h-full rounded-[2rem] bg-[#f7f7f5] p-7 sm:p-8"
+                    className="group relative h-full overflow-hidden rounded-[2rem] bg-primary p-7 text-primary-foreground transition-[background-color,color] duration-300 hover:bg-primary-foreground hover:text-primary sm:p-8"
                   >
-                    <h3 className="text-[clamp(1.45rem,1.8vw,1.8rem)] leading-[1.2] font-medium tracking-[-0.04em] text-primary-foreground">
+                    <h3 className="relative z-10 text-[clamp(1.45rem,1.8vw,1.8rem)] leading-[1.2] font-medium tracking-[-0.04em]">
                       {card.title}
                     </h3>
-                    <p className="mt-5 font-subtext text-[0.95rem] leading-[1.65] text-primary-foreground/75">
+                    <p className="relative z-10 mt-5 max-w-[39ch] font-subtext text-[0.95rem] leading-[1.65] opacity-80">
                       {card.description}
                     </p>
+                    <div className="pointer-events-none absolute right-0 bottom-0 h-[36%] w-[78%] sm:h-[42%] sm:w-[72%]">
+                      <PlatformIllustration kind={card.kind} />
+                    </div>
                   </motion.article>
                 )}
               </AnimatePresence>

@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @source "../components";
 
+@property --button-fill {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 :root {
   --background: oklch(0.98 0.008 115);
   --foreground: oklch(0.25 0.05 155);
