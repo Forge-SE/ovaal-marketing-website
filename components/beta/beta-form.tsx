@@ -11,6 +11,8 @@ import { HoverFill } from "@/components/marketing/hover-fill";
 import { betaSchema, initialValues, roles, restaurantTypes } from "./beta-schema";
 import { BetaSuccess } from "./beta-success";
 import { LocationPicker } from "./location-picker";
+import { CookieSettingsButton } from "@/components/privacy/cookie-settings-button";
+import { InternationalPhoneInput } from "@/components/forms/phone-input";
 
 type FieldName = keyof typeof initialValues;
 const controlClass = "min-h-13 w-full rounded-full border border-primary-foreground/15 bg-white px-5 py-3 text-[15px] text-primary-foreground outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-primary-foreground/35 focus-visible:border-primary-foreground focus-visible:ring-2 focus-visible:ring-primary/60 aria-invalid:border-red-700";
@@ -18,10 +20,24 @@ const controlClass = "min-h-13 w-full rounded-full border border-primary-foregro
 export function BetaForm() {
   const [complete, setComplete] = useState(false);
   const reduceMotion = useReducedMotion();
-  const formik = useFormik({ initialValues, validationSchema: betaSchema, onSubmit: (_values, helpers) => { setComplete(true); helpers.setSubmitting(false); } });
+  const formik = useFormik({ initialValues, validationSchema: betaSchema, onSubmit: async (values, helpers) => {
+    helpers.setStatus(undefined);
+    try {
+      const response = await fetch("/api/beta", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values), signal: AbortSignal.timeout(20000) });
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        if (result.fields) helpers.setErrors(result.fields);
+        helpers.setStatus(result.error || "We couldn’t save your signup. Please try again.");
+        return;
+      }
+      setComplete(true);
+    } catch {
+      helpers.setStatus("We couldn’t confirm your signup. Please check your connection and try again. Your details are still here.");
+    } finally { helpers.setSubmitting(false); }
+  } });
   const errorFor = (name: FieldName) => formik.touched[name] ? formik.errors[name] : undefined;
   const row = (children: ReactNode, key: string) => (
-    <motion.div key={key} variants={{ hidden: { opacity: 0, y: reduceMotion ? 0 : 20 }, visible: { opacity: 1, y: 0, transition: { duration: reduceMotion ? 0 : .45, ease: [.2, 0, 0, 1] } } }} className="grid gap-5 sm:grid-cols-2">{children}</motion.div>
+    <motion.div key={key} variants={{ hidden: { opacity: 0, y: reduceMotion ? 0 : 20 }, visible: { opacity: 1, y: 0, transition: { duration: reduceMotion ? 0 : .45, ease: [.2, 0, 0, 1] } } }} className="grid grid-cols-1 gap-5 sm:grid-cols-2 [&>*]:min-w-0">{children}</motion.div>
   );
   const field = (name: FieldName, label: string, placeholder: string, type = "text", autoComplete?: string) => (
     <div className={name === "fullName" ? "sm:col-span-2" : ""}>
@@ -59,7 +75,7 @@ export function BetaForm() {
           </motion.div>
           <motion.form noValidate onSubmit={async (event) => { event.preventDefault(); const errors = await formik.validateForm(); void formik.submitForm(); const first = Object.keys(errors)[0]; if (first) document.getElementById(first)?.focus(); }} initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: reduceMotion ? 0 : .085, delayChildren: reduceMotion ? 0 : .12 } } }} className="mt-9 space-y-5">
             {row(field("fullName", "Full name", "Your full name", "text", "name"), "name")}
-            {row(<>{field("email", "Email address", "you@restaurant.com", "email", "email")}{field("phone", "Phone number", "+233 24 000 0000", "tel", "tel")}</>, "contact")}
+            {row(<>{field("email", "Email address", "you@restaurant.com", "email", "email")}<InternationalPhoneInput id="phone" value={formik.values.phone} onChange={value => { void formik.setFieldValue("phone", value); }} onBlur={() => { void formik.setFieldTouched("phone", true); }} error={errorFor("phone")} /></>, "contact")}
             {row(<>{field("restaurantName", "Restaurant name", "Your restaurant", "text", "organization")}{select("role", "Your role", roles)}</>, "restaurant")}
             {row(<>{select("restaurantType", "Type of restaurant", restaurantTypes)}<LocationPicker value={formik.values.location} onChange={(value) => { void formik.setFieldValue("location", value); }} onBlur={() => { void formik.setFieldTouched("location", true); }} error={errorFor("location")} className={controlClass} /></>, "details")}
             {row(
@@ -88,9 +104,10 @@ export function BetaForm() {
                 </NumberField.Root>
                 {errorFor("branches") && <p id="branches-error" className="mt-2 text-xs text-red-700">{errorFor("branches")}</p>}
               </div>, "branches")}
-            {row(<div className="sm:col-span-2"><button type="submit" disabled={formik.isSubmitting} className="group relative isolate mt-2 inline-flex min-h-13 w-full items-center justify-center gap-3 overflow-hidden rounded-full px-7 py-3.5 text-sm font-semibold transition-colors hover:text-primary focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground disabled:opacity-60"><HoverFill color="dark" /><span className="relative z-10">Join the beta</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="relative z-10 size-5"><path d="M4 12h16m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg></button></div>, "submit")}
+            {row(<div className="sm:col-span-2"><button type="submit" disabled={formik.isSubmitting} className="group relative isolate mt-2 inline-flex min-h-13 w-full items-center justify-center gap-3 overflow-hidden rounded-full px-7 py-3.5 text-sm font-semibold transition-colors hover:text-primary focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground disabled:opacity-60"><HoverFill color="dark" /><span className="relative z-10">{formik.isSubmitting ? "Joining…" : "Join the beta"}</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="relative z-10 size-5"><path d="M4 12h16m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg></button></div>, "submit")}
           </motion.form>
-          <p className="mt-5 text-center font-subtext text-xs leading-relaxed text-primary-foreground/65">Read our <Link href="/privacy-policy" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Privacy Policy</Link> and <Link href="/terms-of-service" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Terms of Service</Link>.</p>
+          {formik.status && <p role="alert" className="mt-4 rounded-2xl bg-red-50 px-4 py-3 font-subtext text-sm leading-relaxed text-red-800">{formik.status}</p>}
+          <p className="mt-5 text-center font-subtext text-xs leading-relaxed text-primary-foreground/65">By joining, you ask us to contact you about the Ovaal beta. Read our <Link href="/privacy-policy" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Privacy Policy</Link> and <Link href="/terms-of-service" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Terms of Service</Link>. <CookieSettingsButton className="text-xs" /></p>
         </motion.div>
       )}
     </AnimatePresence>

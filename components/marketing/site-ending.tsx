@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { CookieSettingsButton } from "@/components/privacy/cookie-settings-button";
 
 import { useRef } from "react";
 import { useFooterSnap } from "./use-footer-snap";
@@ -50,7 +51,7 @@ export function SiteEnding() {
           <div><div className="flex flex-wrap gap-x-4 gap-y-1"><p>© 2026 Forge Studios.</p><address className="not-italic">{footerDetails.address}</address></div></div>
           <div className="flex flex-wrap items-center gap-3 pb-1 md:gap-4">
             {footerDetails.socials.map(social => social.href ? <a key={social.name} href={social.href} aria-label={social.name} target="_blank" rel="noopener noreferrer" className="flex size-10 items-center justify-center rounded-full hover:bg-primary-foreground/10 focus-visible:outline-2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="size-5"><path d={social.path} /></svg></a> : <span key={social.name} role="img" aria-label={`${social.name} — profile coming soon`} title={`${social.name} — profile coming soon`} className="flex size-10 items-center justify-center opacity-50"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="size-5"><path d={social.path} /></svg></span>)}
-            <Link href="/privacy-policy" className="rounded-sm text-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Privacy Policy</Link><Link href="/terms-of-service" className="rounded-sm text-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Terms of Service</Link>
+            <Link href="/privacy-policy" className="rounded-sm text-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Privacy Policy</Link><Link href="/terms-of-service" className="rounded-sm text-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4">Terms of Service</Link><CookieSettingsButton />
           </div>
         </div>
       </div></div>

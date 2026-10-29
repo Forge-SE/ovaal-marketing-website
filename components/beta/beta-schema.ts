@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { isPossiblePhoneNumber } from "libphonenumber-js/min";
 
 export const roles = ["Owner / Founder", "Manager", "Operations lead", "Chef", "Other"];
 export const restaurantTypes = ["Full-service restaurant", "Quick service / Fast casual", "Café / Coffee shop", "Bar / Lounge", "Bakery", "Food truck / Takeaway", "Other"];
@@ -6,7 +7,7 @@ export const restaurantTypes = ["Full-service restaurant", "Quick service / Fast
 export const betaSchema = yup.object({
   fullName: yup.string().trim().max(120).required("Enter your full name."),
   email: yup.string().trim().email("Enter a valid email address.").max(254).required("Enter your email address."),
-  phone: yup.string().trim().required("Enter your phone number.").test("phone", "Enter a valid phone number, including your country code.", (value) => !!value && /^\+?[\d\s().-]+$/.test(value) && value.replace(/\D/g, "").length >= 7 && value.replace(/\D/g, "").length <= 15),
+  phone: yup.string().trim().required("Enter your phone number.").test("phone", "Enter a valid phone number for the selected country.", value => !!value && value.startsWith("+") && isPossiblePhoneNumber(value)),
   restaurantName: yup.string().trim().max(160).required("Enter your restaurant name."),
   role: yup.string().oneOf(roles).required("Select your role."),
   restaurantType: yup.string().oneOf(restaurantTypes).required("Select your restaurant type."),
