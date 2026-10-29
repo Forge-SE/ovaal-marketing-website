@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import { HoverFill } from "@/components/marketing/hover-fill";
+import { LoadingButton } from "@/components/forms/loading-button";
 import { betaSchema, initialValues, roles, restaurantTypes } from "./beta-schema";
 import { BetaSuccess } from "./beta-success";
 import { LocationPicker } from "./location-picker";
@@ -104,7 +104,7 @@ export function BetaForm() {
                 </NumberField.Root>
                 {errorFor("branches") && <p id="branches-error" className="mt-2 text-xs text-red-700">{errorFor("branches")}</p>}
               </div>, "branches")}
-            {row(<div className="sm:col-span-2"><button type="submit" disabled={formik.isSubmitting} className="group relative isolate mt-2 inline-flex min-h-13 w-full items-center justify-center gap-3 overflow-hidden rounded-full px-7 py-3.5 text-sm font-semibold transition-colors hover:text-primary focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground disabled:opacity-60"><HoverFill color="dark" /><span className="relative z-10">{formik.isSubmitting ? "Joining…" : "Join the beta"}</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="relative z-10 size-5"><path d="M4 12h16m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg></button></div>, "submit")}
+            {row(<div className="sm:col-span-2"><LoadingButton type="submit" loading={formik.isSubmitting} loadingLabel="Submitting your beta signup" className="mt-2 min-h-13 w-full px-7 py-3.5">Join the beta<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-5"><path d="M4 12h16m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg></LoadingButton></div>, "submit")}
           </motion.form>
           {formik.status && <p role="alert" className="mt-4 rounded-2xl bg-red-50 px-4 py-3 font-subtext text-sm leading-relaxed text-red-800">{formik.status}</p>}
           <p className="mt-5 text-center font-subtext text-xs leading-relaxed text-primary-foreground/65">By joining, you ask us to contact you about the Ovaal beta. Read our <Link href="/privacy-policy" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Privacy Policy</Link> and <Link href="/terms-of-service" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Terms of Service</Link>. <CookieSettingsButton className="text-xs" /></p>

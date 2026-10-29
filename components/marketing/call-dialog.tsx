@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import * as yup from "yup";
 import { FeatureLineArt } from "./feature-line-art";
 import { HoverFill } from "./hover-fill";
+import { LoadingButton } from "@/components/forms/loading-button";
 import { MeetingDateTime } from "@/components/forms/meeting-date-time";
 import { accraToday, isPastMeetingTime, parseMeetingDate } from "@/lib/meeting-time";
 
@@ -41,7 +42,7 @@ function CallForm() {
       <form noValidate onSubmit={async event => { event.preventDefault(); const errors = await formik.validateForm(); void formik.submitForm(); const first = Object.keys(errors)[0]; if (first) document.getElementById(`call-${first}`)?.focus(); }} className="mt-6 space-y-4">
         {fields.map(field => { const error = formik.touched[field.name] && formik.errors[field.name]; return <div key={field.name}><label htmlFor={`call-${field.name}`} className="mb-2 block text-sm font-medium">{field.label}{"optional" in field && <span className="ml-2 font-normal text-primary-foreground/45">Optional</span>}</label><Input id={`call-${field.name}`} {...formik.getFieldProps(field.name)} type={field.type} autoComplete={field.autoComplete} placeholder={field.placeholder} aria-required={!("optional" in field)} aria-invalid={!!error} aria-describedby={error ? `call-${field.name}-error` : undefined} className="min-h-12 w-full rounded-full border border-primary-foreground/15 bg-white px-5 py-3 text-sm outline-none placeholder:text-primary-foreground/35 focus-visible:border-primary-foreground focus-visible:ring-2 focus-visible:ring-primary/60 aria-invalid:border-red-700" />{error && <p id={`call-${field.name}-error`} className="mt-2 text-xs text-red-700">{error}</p>}</div>; })}
         <MeetingDateTime date={formik.values.date} time={formik.values.time} onDateChange={date => { void formik.setValues(current => ({ ...current, date, time: date && !isPastMeetingTime(date, current.time) ? current.time : "" })); }} onTimeChange={value => { void formik.setFieldValue("time", value); }} onDateBlur={() => { void formik.setFieldTouched("date", true, false); }} onTimeBlur={() => { void formik.setFieldTouched("time", true, false); }} dateError={formik.touched.date ? formik.errors.date : undefined} timeError={formik.touched.time ? formik.errors.time : undefined} />
-        <button type="submit" disabled={formik.isSubmitting} className="group relative isolate mt-2 inline-flex min-h-12 w-full items-center justify-center overflow-hidden rounded-full px-7 py-3 text-sm font-semibold hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground disabled:opacity-60"><HoverFill color="dark" /><span className="relative z-10">Request a call</span></button>
+        <LoadingButton type="submit" loading={formik.isSubmitting} loadingLabel="Preparing your call request" className="mt-2 min-h-12 w-full px-7 py-3">Request a call</LoadingButton>
         <p className="text-center font-subtext text-xs leading-relaxed text-primary-foreground/65"><Link href="/privacy-policy" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Privacy Policy</Link><span aria-hidden="true"> · </span><Link href="/terms-of-service" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Terms of Service</Link></p>
       </form>
     </>}
