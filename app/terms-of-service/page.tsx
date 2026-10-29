@@ -14,7 +14,8 @@ const sections: LegalSection[] = [
   </> },
   { id: "beta", title: "Beta access and previews", content: <>
     <p>Ovaal is being developed with restaurants in mind, starting in Ghana. Features, eligibility, availability and roadmap dates may change. Descriptions, illustrations and interactive demonstrations explain the product direction and do not guarantee that every feature is available to every restaurant.</p>
-    <p>The website’s beta and call forms currently operate as local previews. They do not transmit submissions, register a restaurant or schedule a call, even when a confirmation is shown. To express interest directly, email <a href="mailto:hello@ovaal.xyz">hello@ovaal.xyz</a>. An enquiry does not guarantee beta access, a launch date or a founding restaurant offer.</p>
+    <p>The beta form sends your contact and restaurant details to us through Resend. A success confirmation means your beta enquiry has been saved and you have asked our team to contact you about it. It does not create a restaurant account, paid subscription or guarantee beta access, a launch date or a founding restaurant offer. If an error appears, try again or email <a href="mailto:hello@ovaal.xyz">hello@ovaal.xyz</a>.</p>
+    <p>The call form still previews a request locally. Choosing a preferred date and time does not send a meeting request or reserve a calendar slot. Please email us to arrange a call; any meeting time must be confirmed by our team.</p>
   </> },
   { id: "acceptable-use", title: "Using the website responsibly", content: <>
     <p>You may browse the website and contact us about Ovaal. If you communicate on behalf of a restaurant or another organisation, you should have permission to do so and provide accurate information.</p>
@@ -31,6 +32,7 @@ const sections: LegalSection[] = [
   </> },
   { id: "privacy", title: "Privacy and external services", content: <>
     <p>Our <Link href="/privacy-policy">Privacy Policy</Link> explains how information is handled on this website. Please read it before contacting us or entering information into a form.</p>
+    <p>We use Vercel Web Analytics only when you accept analytics through our consent controls. An essential preference cookie remembers your choice for 180 days. You can reject optional analytics or change your choice using Cookie settings without affecting your use of this website or beta signup. Using the website or accepting these terms does not, by itself, give consent to analytics. Details of the information collected and Vercel’s role appear in our <Link href="/privacy-policy#cookies">cookies and analytics notice</Link>.</p>
     <p>Links to external websites are provided for convenience. We do not operate those websites and their own terms and privacy policies apply. A link does not guarantee the accuracy or availability of an external service.</p>
   </> },
   { id: "availability", title: "Accuracy, availability and responsibility", content: <>

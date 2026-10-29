@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CookieSettingsButton } from "@/components/privacy/cookie-settings-button";
 import type { ReactNode } from "react";
 import { HoverFill } from "@/components/marketing/hover-fill";
 
@@ -44,7 +45,7 @@ export function LegalPage({ title, introduction, sections, current }: {
     <footer className="bg-background px-6 py-9 text-primary-foreground sm:px-12 lg:px-16">
       <div className="mx-auto flex max-w-7xl flex-col justify-between gap-6 sm:flex-row sm:items-end">
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-subtext text-xs leading-relaxed text-primary-foreground/70"><p>© 2026 Forge Studios.</p><address className="not-italic">Barnes Road, Accra Central, Ghana</address></div>
-        <nav aria-label="Legal navigation" className="flex flex-wrap gap-6 text-sm"><Link href="/privacy-policy" aria-current={current === "privacy" ? "page" : undefined} className="rounded-sm underline-offset-4 hover:underline aria-[current=page]:underline focus-visible:outline-2 focus-visible:outline-offset-4">Privacy Policy</Link><Link href="/terms-of-service" aria-current={current === "terms" ? "page" : undefined} className="rounded-sm underline-offset-4 hover:underline aria-[current=page]:underline focus-visible:outline-2 focus-visible:outline-offset-4">Terms of Service</Link></nav>
+        <nav aria-label="Legal navigation" className="flex flex-wrap gap-x-6 gap-y-3 text-sm"><Link href="/privacy-policy" aria-current={current === "privacy" ? "page" : undefined} className="rounded-sm underline-offset-4 hover:underline aria-[current=page]:underline focus-visible:outline-2 focus-visible:outline-offset-4">Privacy Policy</Link><Link href="/terms-of-service" aria-current={current === "terms" ? "page" : undefined} className="rounded-sm underline-offset-4 hover:underline aria-[current=page]:underline focus-visible:outline-2 focus-visible:outline-offset-4">Terms of Service</Link><CookieSettingsButton /></nav>
       </div>
     </footer>
   </div>;
