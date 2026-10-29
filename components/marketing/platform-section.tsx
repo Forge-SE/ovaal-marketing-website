@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
-import Link from "next/link";
+import { TransitionLink as Link } from "@/components/marketing/page-transition";
 import { PlatformIllustration } from "@/components/marketing/platform-illustration";
 import { HoverFill } from "@/components/marketing/hover-fill";
 
@@ -34,8 +34,9 @@ export function PlatformSection() {
 
   return (
     <section
+      id="product"
       aria-labelledby="platform-heading"
-      className="relative z-30 -mt-[100svh] min-h-svh bg-white px-6 py-24 text-primary-foreground motion-reduce:mt-0 sm:px-12 sm:py-28 lg:px-20 lg:py-32"
+      className="relative z-30 -mt-[100svh] min-h-svh scroll-mt-28 bg-white px-6 py-24 text-primary-foreground motion-reduce:mt-0 sm:px-12 sm:py-28 lg:px-20 lg:py-32"
     >
       <div className="mx-auto max-w-[1440px]">
         <div className="flex flex-col items-start gap-10 lg:flex-row lg:justify-between lg:gap-16">

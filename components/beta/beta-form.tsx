@@ -10,6 +10,7 @@ import Link from "next/link";
 import { HoverFill } from "@/components/marketing/hover-fill";
 import { betaSchema, initialValues, roles, restaurantTypes } from "./beta-schema";
 import { BetaSuccess } from "./beta-success";
+import { LocationPicker } from "./location-picker";
 
 type FieldName = keyof typeof initialValues;
 const controlClass = "min-h-13 w-full rounded-full border border-primary-foreground/15 bg-white px-5 py-3 text-[15px] text-primary-foreground outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-primary-foreground/35 focus-visible:border-primary-foreground focus-visible:ring-2 focus-visible:ring-primary/60 aria-invalid:border-red-700";
@@ -60,7 +61,7 @@ export function BetaForm() {
             {row(field("fullName", "Full name", "Your full name", "text", "name"), "name")}
             {row(<>{field("email", "Email address", "you@restaurant.com", "email", "email")}{field("phone", "Phone number", "+233 24 000 0000", "tel", "tel")}</>, "contact")}
             {row(<>{field("restaurantName", "Restaurant name", "Your restaurant", "text", "organization")}{select("role", "Your role", roles)}</>, "restaurant")}
-            {row(<>{select("restaurantType", "Type of restaurant", restaurantTypes)}{field("location", "Location", "City, country", "text", "off")}</>, "details")}
+            {row(<>{select("restaurantType", "Type of restaurant", restaurantTypes)}<LocationPicker value={formik.values.location} onChange={(value) => { void formik.setFieldValue("location", value); }} onBlur={() => { void formik.setFieldTouched("location", true); }} error={errorFor("location")} className={controlClass} /></>, "details")}
             {row(
               <div>
                 <label htmlFor="branches" className="mb-2 block text-sm font-medium">Number of branches <span className="ml-2 font-normal text-primary-foreground/45">Optional</span></label>
@@ -89,6 +90,7 @@ export function BetaForm() {
               </div>, "branches")}
             {row(<div className="sm:col-span-2"><button type="submit" disabled={formik.isSubmitting} className="group relative isolate mt-2 inline-flex min-h-13 w-full items-center justify-center gap-3 overflow-hidden rounded-full px-7 py-3.5 text-sm font-semibold transition-colors hover:text-primary focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground disabled:opacity-60"><HoverFill color="dark" /><span className="relative z-10">Join the beta</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="relative z-10 size-5"><path d="M4 12h16m-6-6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg></button></div>, "submit")}
           </motion.form>
+          <p className="mt-5 text-center font-subtext text-xs leading-relaxed text-primary-foreground/65">Read our <Link href="/privacy-policy" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Privacy Policy</Link> and <Link href="/terms-of-service" className="rounded-sm underline underline-offset-4 focus-visible:outline-2">Terms of Service</Link>.</p>
         </motion.div>
       )}
     </AnimatePresence>

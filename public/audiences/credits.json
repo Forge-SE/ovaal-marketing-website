@@ -1,0 +1,9 @@
+{
+  "source": "Unsplash",
+  "images": [
+    { "file": "local-eateries.webp", "photographer": "Rey Melvin Caraan", "url": "https://unsplash.com/photos/4TVl5LlZyKk", "image": "https://images.unsplash.com/photo-1569707450161-98e87f345338" },
+    { "file": "bars-lounges.webp", "image": "https://images.unsplash.com/photo-1514933651103-005eec06c04b" },
+    { "file": "delivery-kitchens.webp", "image": "https://images.unsplash.com/photo-1551218808-94e220e084d2" },
+    { "file": "restaurant-brands.webp", "image": "https://images.unsplash.com/photo-1552566626-2d907dab0dff" }
+  ]
+}

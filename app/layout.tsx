@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { PageTransitionProvider } from "@/components/marketing/page-transition";
 
 const tomatoGrotesk = localFont({
   src: [
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${tomatoGrotesk.variable} ${seasonSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col"><PageTransitionProvider>{children}</PageTransitionProvider></body>
     </html>
   );
 }

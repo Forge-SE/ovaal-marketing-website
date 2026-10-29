@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { HoverFill } from "@/components/marketing/hover-fill";
+import { BottomLight } from "@/components/marketing/bottom-light";
 
 const connectionBenefits = {
   online: [
@@ -139,8 +140,9 @@ export function ConnectionSection() {
     <section
       ref={sectionRef}
       aria-labelledby="connection-heading"
-      className="relative isolate min-h-svh overflow-hidden bg-secondary"
+      className="relative isolate min-h-svh overflow-hidden bg-primary-foreground"
     >
+      <BottomLight />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute"

@@ -10,7 +10,7 @@ export const betaSchema = yup.object({
   restaurantName: yup.string().trim().max(160).required("Enter your restaurant name."),
   role: yup.string().oneOf(roles).required("Select your role."),
   restaurantType: yup.string().oneOf(restaurantTypes).required("Select your restaurant type."),
-  location: yup.string().trim().max(200).required("Enter your city and country."),
+  location: yup.string().trim().max(200).required("Search for and select your city or area."),
   branches: yup.number().transform((value, original) => original === "" ? undefined : value).typeError("Enter a number.").integer("Enter a whole number.").min(1, "Enter at least 1 branch.").max(10000, "Enter a number below 10,001.").optional(),
 });
 

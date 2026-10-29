@@ -29,7 +29,7 @@ export function BetaSuccess({ onEdit }: { onEdit: () => void }) {
         </svg>
       </div>
       <h1 ref={headingRef} tabIndex={-1} className="text-4xl leading-[1.1] tracking-[-.045em] outline-none sm:text-5xl">You’re ready for what’s next.</h1>
-      <p className="mt-5 max-w-md font-subtext leading-relaxed text-primary-foreground/70">Your form is complete. This is a preview of the beta signup experience; your details haven’t been sent or saved yet.</p>
+      <p className="mt-5 max-w-md font-subtext leading-relaxed text-primary-foreground/70">Thank you. We’ll be in touch shortly to talk about bringing Ovaal to your restaurant.</p>
       <div className="mt-8 flex flex-wrap items-center gap-5">
         <Link href="/" className="group relative isolate inline-flex min-h-12 items-center overflow-hidden rounded-full px-7 py-3 text-sm font-semibold hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground"><HoverFill color="dark" /><span className="relative z-10">Back to Ovaal</span></Link>
         <button type="button" onClick={onEdit} className="rounded-full px-3 py-2 text-sm underline underline-offset-4 focus-visible:outline-2">Edit details</button>

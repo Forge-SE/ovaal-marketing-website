@@ -8,9 +8,10 @@ import {
   type MotionValue,
 } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { TransitionLink as Link, usePageReady } from "@/components/marketing/page-transition";
 import { useEffect, useRef, useState } from "react";
 import { HoverFill } from "@/components/marketing/hover-fill";
+import { BottomLight } from "@/components/marketing/bottom-light";
 
 const imageSrc = "/restaurant-service.webp";
 
@@ -95,6 +96,7 @@ function ExpandingImage({
 }
 
 export function HeroExperience() {
+  const pageReady = usePageReady();
   const sequenceRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLElement>(null);
   const imageAnchorRef = useRef<HTMLSpanElement>(null);
@@ -150,37 +152,26 @@ export function HeroExperience() {
   return (
     <div
       ref={sequenceRef}
-      className="relative h-[450svh] bg-secondary motion-reduce:h-auto"
+      className="relative h-[450svh] bg-primary-foreground motion-reduce:h-auto"
     >
       <section
         ref={viewportRef}
         aria-labelledby="hero-title"
-        className="sticky top-0 h-svh overflow-hidden bg-secondary text-secondary-foreground motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-svh"
+        className="sticky top-0 h-svh overflow-hidden bg-primary-foreground text-secondary-foreground motion-reduce:relative motion-reduce:h-auto motion-reduce:min-h-svh"
       >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(112deg,transparent_8%,rgb(185_227_101_/_0.13)_30%,transparent_47%),linear-gradient(68deg,transparent_43%,rgb(185_227_101_/_0.09)_65%,transparent_82%)] [mask-image:linear-gradient(to_top,black,transparent)]"
-        />
+        <BottomLight />
         <motion.div
           style={{ opacity: reduceMotion ? 1 : heroOpacity }}
           className="relative z-0 grid h-full min-h-svh w-full min-w-0 grid-rows-[auto_1fr] px-5 py-6 sm:px-10 sm:py-8 lg:px-20 lg:py-10"
         >
-          <div className="flex items-center">
-            <span className="inline-flex items-center gap-2.5 text-[1.35rem] leading-none font-semibold tracking-[-0.065em] sm:text-[1.6rem]">
-              <Image
-                src="/pwa-192x192.png"
-                alt=""
-                width={30}
-                height={30}
-                className="size-[30px] rounded-lg"
-              />
-              Ovaal
-            </span>
-          </div>
+          <div aria-hidden="true" className="h-[30px]" />
 
           <div className="flex w-full min-w-0 flex-col items-center justify-center py-7 text-center">
-            <h1
+            <motion.h1
               id="hero-title"
+              initial={{ opacity: 0, filter: "blur(8px)" }}
+              animate={{ opacity: pageReady ? 1 : 0, filter: pageReady || reduceMotion ? "blur(0px)" : "blur(8px)" }}
+              transition={{ duration: reduceMotion ? 0 : 0.75, delay: pageReady && !reduceMotion ? 0.35 : 0, ease: [0.2, 0, 0, 1] }}
               className="mx-auto max-w-[19ch] text-[clamp(2.75rem,5.4vw,5.3rem)] leading-[1.1] font-medium tracking-[-0.055em] text-balance max-[640px]:max-w-full max-[640px]:text-[clamp(2.15rem,8.5vw,3.25rem)]"
             >
               Grow your restaurant{" "}
@@ -203,12 +194,20 @@ export function HeroExperience() {
                 </motion.span>
               </span>{" "}
               by serving every guest better.
-            </h1>
-            <p className="mt-6 max-w-[42rem] font-subtext text-[clamp(0.98rem,1.35vw,1.12rem)] leading-[1.55] text-secondary-foreground/85 sm:mt-8">
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: pageReady ? 1 : 0, y: pageReady || reduceMotion ? 0 : 12 }}
+              transition={{ duration: reduceMotion ? 0 : 0.6, delay: pageReady && !reduceMotion ? 0.5 : 0, ease: [0.2, 0, 0, 1] }}
+              className="mt-6 max-w-[42rem] font-subtext text-[clamp(0.98rem,1.35vw,1.12rem)] leading-[1.55] text-secondary-foreground/85 sm:mt-8">
               Ovaal puts orders, kitchen, payments, stock and insight on one platform,
               so guests get a smoother experience and you get the numbers to grow.
-            </p>
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:mt-9">
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: pageReady ? 1 : 0, y: pageReady || reduceMotion ? 0 : 12 }}
+              transition={{ duration: reduceMotion ? 0 : 0.6, delay: pageReady && !reduceMotion ? 0.65 : 0, ease: [0.2, 0, 0, 1] }}
+              className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:mt-9">
               <Link
                 href="/beta"
                 className="group relative isolate inline-flex min-h-12 items-center justify-center overflow-hidden rounded-full px-6 py-3 text-sm font-semibold text-primary-foreground transition-[color,scale] duration-150 hover:text-primary active:scale-[0.96] focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
@@ -224,7 +223,7 @@ export function HeroExperience() {
                 <span className="relative z-10">See how it works</span>
                 <ArrowRightIcon />
               </a>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
 
