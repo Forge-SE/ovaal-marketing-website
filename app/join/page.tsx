@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { PartnerForm } from "@/components/partner/partner-form";
 
 export const metadata: Metadata = {
@@ -8,9 +9,7 @@ export const metadata: Metadata = {
   description: "Enter the partner code we sent you and share your restaurant details. We review the application before your restaurant is created.",
 };
 
-export default async function JoinPage({ searchParams }: { searchParams: Promise<{ code?: string }> }) {
-  const params = await searchParams;
-  const code = typeof params.code === "string" ? params.code.slice(0, 16) : "";
+export default function JoinPage({ searchParams }: { searchParams: Promise<{ code?: string }> }) {
   return (
     <main className="min-h-svh bg-[#fafbf7] text-primary-foreground lg:grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
       <aside className="relative isolate flex min-h-[300px] flex-col justify-between overflow-hidden bg-primary-foreground p-7 text-white sm:p-10 lg:sticky lg:top-0 lg:h-svh lg:min-h-[650px] lg:p-12">
@@ -24,9 +23,17 @@ export default async function JoinPage({ searchParams }: { searchParams: Promise
       </aside>
       <section aria-label="Partner application" className="px-6 py-9 sm:px-12 sm:py-12 lg:px-12 xl:px-20">
         <div className="mx-auto max-w-[660px]">
-          <PartnerForm initialCode={code} />
+          <Suspense fallback={<PartnerForm initialCode="" />}>
+            <PartnerCode searchParams={searchParams} />
+          </Suspense>
         </div>
       </section>
     </main>
   );
+}
+
+async function PartnerCode({ searchParams }: { searchParams: Promise<{ code?: string }> }) {
+  const params = await searchParams;
+  const code = typeof params.code === "string" ? params.code.slice(0, 16) : "";
+  return <PartnerForm initialCode={code} />;
 }
