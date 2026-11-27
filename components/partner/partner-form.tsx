@@ -17,6 +17,7 @@ const regions = ["Greater Accra", "Ashanti", "Western", "Western North", "Centra
 const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
 const dayLabels: Record<string, string> = { monday: "Monday", tuesday: "Tuesday", wednesday: "Wednesday", thursday: "Thursday", friday: "Friday", saturday: "Saturday", sunday: "Sunday" };
 const controlClass = "min-h-13 w-full rounded-full border border-primary-foreground/15 bg-white px-5 py-3 text-[15px] text-primary-foreground outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-primary-foreground/35 focus-visible:border-primary-foreground focus-visible:ring-2 focus-visible:ring-primary/60 aria-invalid:border-red-700";
+const textareaClass = `${controlClass.replace("rounded-full", "rounded-xl")} min-h-28 resize-y`;
 const steps = ["Restaurant", "Admin", "Compliance"];
 
 const hours = weekdays.map(day => ({ day, closed: day === "sunday", opens: "09:00", closes: "22:00" }));
@@ -214,7 +215,7 @@ export function PartnerForm({ initialCode = "" }: { initialCode?: string }) {
             {step === 0 && <>
               <Text id="restaurantName" label="Restaurant name" value={formik.values.restaurantName} error={errorFor("restaurantName")} onBlur={formik.handleBlur} onChange={(value) => { void formik.setFieldValue("restaurantName", value); if (!slugEdited) void formik.setFieldValue("slug", slugFrom(value)); }} placeholder="Ama’s Kitchen" />
               <label className="block" htmlFor="description"><span className="mb-2 block text-sm font-medium">Description<span className="ml-2 font-normal text-primary-foreground/45">Optional</span></span>
-                <textarea id="description" name="description" value={formik.values.description} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="What guests should know about the restaurant" className={`${controlClass} min-h-28 rounded-3xl`} />
+                <textarea id="description" name="description" value={formik.values.description} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="What guests should know about the restaurant" className={textareaClass} />
               </label>
               <Text id="slug" label="Workspace URL" value={formik.values.slug} error={errorFor("slug")} onBlur={formik.handleBlur} onChange={(value) => { setSlugEdited(true); void formik.setFieldValue("slug", slugFrom(value)); }} placeholder="amas-kitchen" />
               <Text id="address" label="Address" value={formik.values.address} error={errorFor("address")} onBlur={formik.handleBlur} onChange={(value) => { void formik.setFieldValue("address", value); }} placeholder="14 Oxford Street, Osu" />
@@ -265,7 +266,7 @@ export function PartnerForm({ initialCode = "" }: { initialCode?: string }) {
                 <Text id="districtAssemblyPermit" label="District assembly permit" optional value={formik.values.districtAssemblyPermit} onBlur={formik.handleBlur} onChange={(value) => { void formik.setFieldValue("districtAssemblyPermit", value); }} placeholder="Permit number" />
               </div>
               <label className="block" htmlFor="complianceNotes"><span className="mb-2 block text-sm font-medium">Notes<span className="ml-2 font-normal text-primary-foreground/45">Optional</span></span>
-                <textarea id="complianceNotes" name="complianceNotes" value={formik.values.complianceNotes} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Anything else on file, such as an FDA product registration" className={`${controlClass} min-h-28 rounded-3xl`} />
+                <textarea id="complianceNotes" name="complianceNotes" value={formik.values.complianceNotes} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Anything else on file, such as an FDA product registration" className={textareaClass} />
               </label>
             </>}
             {formik.status && <p className="text-sm text-red-700" role="alert">{formik.status}</p>}
