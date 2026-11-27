@@ -1,6 +1,7 @@
 "use client";
 
 import { Input } from "@base-ui/react/input";
+import { OTPField } from "@base-ui/react/otp-field";
 import { Select } from "@base-ui/react/select";
 import { useFormik } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
@@ -53,12 +54,18 @@ const initialValues = {
   businessRegistrationNumber: "", tin: "", foodHygienePermit: "", districtAssemblyPermit: "", complianceNotes: "",
 };
 
+const codeLength = 8;
+
+function normalizeCode(value: string) {
+  return value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, codeLength);
+}
+
 function slugFrom(value: string) {
   return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
 export function PartnerForm({ initialCode = "" }: { initialCode?: string }) {
-  const [code, setCode] = useState(initialCode);
+  const [code, setCode] = useState(() => normalizeCode(initialCode));
   const [unlocked, setUnlocked] = useState("");
   const [checking, setChecking] = useState(false);
   const [codeError, setCodeError] = useState<string | null>(null);
@@ -176,13 +183,17 @@ export function PartnerForm({ initialCode = "" }: { initialCode?: string }) {
           <p className="text-xs font-semibold tracking-[.14em] uppercase text-primary-foreground/55">Partner onboarding</p>
           <h1 className="mt-4 max-w-lg text-[clamp(2.2rem,3.7vw,3.6rem)] leading-[1.05] tracking-[-.05em]">Enter your partner code.</h1>
           <p className="mt-5 max-w-lg font-subtext text-[15px] leading-relaxed text-primary-foreground/65">We send this code when we’ve agreed to bring your restaurant onto Ovaal. After it checks out, you’ll share the same details we use to create a restaurant.</p>
-          <form onSubmit={unlock} className="mt-9 max-w-md space-y-4">
+          <form onSubmit={unlock} className="mt-9 w-full space-y-4">
             <div>
               <label htmlFor="partner-code" className="mb-2 block text-sm font-medium">Partner code</label>
-              <Input id="partner-code" value={code} onChange={(event) => setCode(event.target.value.toUpperCase())} autoComplete="off" placeholder="Enter your code" aria-invalid={!!codeError} className={`${controlClass} tracking-[0.18em] uppercase`} />
+              <OTPField.Root id="partner-code" length={codeLength} value={code} onValueChange={(value) => { setCode(value); setCodeError(null); }} validationType="alphanumeric" normalizeValue={normalizeCode} autoComplete="off" aria-invalid={!!codeError} className="grid w-full gap-1.5 sm:gap-2.5" style={{ gridTemplateColumns: `repeat(${codeLength}, minmax(0, 1fr))` }}>
+                {Array.from({ length: codeLength }, (_, index) => (
+                  <OTPField.Input key={index} aria-label={`Partner code character ${index + 1} of ${codeLength}`} aria-invalid={!!codeError} className="aspect-[4/5] min-h-12 w-full min-w-0 rounded-2xl border border-primary-foreground/15 bg-white text-center text-lg font-semibold uppercase text-primary-foreground outline-none transition-[border-color,box-shadow] duration-150 focus-visible:border-primary-foreground focus-visible:ring-2 focus-visible:ring-primary/60 aria-invalid:border-red-700 sm:text-2xl" />
+                ))}
+              </OTPField.Root>
               {codeError && <p className="mt-2 text-xs text-red-700">{codeError}</p>}
             </div>
-            <LoadingButton type="submit" loading={checking} loadingLabel="Checking your code" className="min-h-13 w-full px-7 py-3.5">Continue</LoadingButton>
+            <LoadingButton type="submit" loading={checking} disabled={code.length < codeLength} loadingLabel="Checking your code" className="min-h-13 w-full px-7 py-3.5">Continue</LoadingButton>
           </form>
         </motion.div>
       ) : (
