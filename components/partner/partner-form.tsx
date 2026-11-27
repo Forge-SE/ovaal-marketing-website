@@ -7,10 +7,11 @@ import { Switch } from "@base-ui/react/switch";
 import { useFormik } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import * as yup from "yup";
 import { LoadingButton } from "@/components/forms/loading-button";
 import { InternationalPhoneInput } from "@/components/forms/phone-input";
+import { SuccessIllustration } from "@/components/forms/success-illustration";
 import { HoverFill } from "@/components/marketing/hover-fill";
 import { isPossiblePhoneNumber } from "libphonenumber-js/min";
 
@@ -74,6 +75,7 @@ export function PartnerForm({ initialCode = "" }: { initialCode?: string }) {
   const [step, setStep] = useState(0);
   const [slugEdited, setSlugEdited] = useState(false);
   const [complete, setComplete] = useState(false);
+  const successHeadingRef = useCallback((heading: HTMLHeadingElement | null) => { heading?.focus(); }, []);
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
@@ -175,7 +177,8 @@ export function PartnerForm({ initialCode = "" }: { initialCode?: string }) {
     <AnimatePresence mode="wait" initial={false}>
       {complete ? (
         <motion.div key="done" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="py-12">
-          <h1 className="text-4xl leading-[1.1] tracking-[-.045em] sm:text-5xl">Your application is with the Ovaal team.</h1>
+          <SuccessIllustration />
+          <h1 ref={successHeadingRef} tabIndex={-1} className="text-4xl leading-[1.1] tracking-[-.045em] outline-none sm:text-5xl">Your application is with the Ovaal team.</h1>
           <p className="mt-5 max-w-md font-subtext leading-relaxed text-primary-foreground/70">We’ll review the restaurant, admin, and compliance details. The restaurant is created only after we approve it.</p>
           <Link href="/" className="group relative isolate mt-8 inline-flex min-h-12 items-center overflow-hidden rounded-full px-7 py-3 text-sm font-semibold hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground"><HoverFill color="dark" /><span className="relative z-10">Back to Ovaal</span></Link>
         </motion.div>
