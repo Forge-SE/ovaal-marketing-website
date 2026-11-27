@@ -3,6 +3,7 @@
 import { Input } from "@base-ui/react/input";
 import { OTPField } from "@base-ui/react/otp-field";
 import { Select } from "@base-ui/react/select";
+import { Switch } from "@base-ui/react/switch";
 import { useFormik } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
@@ -237,7 +238,12 @@ export function PartnerForm({ initialCode = "" }: { initialCode?: string }) {
                   {formik.values.openingHours.map((row, index) => (
                     <li key={row.day} className="grid items-center gap-3 px-4 py-3 sm:grid-cols-[7.5rem_auto_1fr_1fr]">
                       <span className="text-sm font-medium">{dayLabels[row.day]}</span>
-                      <button type="button" aria-pressed={!row.closed} onClick={() => { const next = formik.values.openingHours.map((entry, entryIndex) => entryIndex === index ? { ...entry, closed: !entry.closed } : entry); void formik.setFieldValue("openingHours", next); }} className="w-fit rounded-full bg-neutral-100 px-3 py-1.5 text-xs font-medium">{row.closed ? "Closed" : "Open"}</button>
+                      <label className="flex w-fit cursor-pointer items-center gap-2.5">
+                        <Switch.Root checked={!row.closed} aria-label={`${dayLabels[row.day]} open`} onCheckedChange={(open) => { const next = formik.values.openingHours.map((entry, entryIndex) => entryIndex === index ? { ...entry, closed: !open } : entry); void formik.setFieldValue("openingHours", next); }} className="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full bg-primary-foreground/20 p-0.5 transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 data-checked:bg-primary-foreground">
+                          <Switch.Thumb className="block size-5 rounded-full bg-white shadow-sm transition-transform duration-150 data-checked:translate-x-5" />
+                        </Switch.Root>
+                        <span className={`w-12 text-xs font-medium ${row.closed ? "text-primary-foreground/50" : ""}`}>{row.closed ? "Closed" : "Open"}</span>
+                      </label>
                       <input type="time" aria-label={`${dayLabels[row.day]} opens`} value={row.opens} disabled={row.closed} onChange={(event) => patchHour(formik, index, { opens: event.target.value })} className={controlClass} />
                       <input type="time" aria-label={`${dayLabels[row.day]} closes`} value={row.closes} disabled={row.closed} onChange={(event) => patchHour(formik, index, { closes: event.target.value })} className={controlClass} />
                     </li>
